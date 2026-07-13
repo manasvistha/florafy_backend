@@ -1,6 +1,7 @@
-// const env = {
-//   port: process.env.PORT || 5000,
-//   mongoUri: process.env.MONGODB_URI,
-// };
+require('dotenv').config();
 
-// export default env;
+module.exports = {
+  PORT: process.env.PORT || 5000,
+  MONGO_URI: process.env.MONGO_URI,
+  JWT_SECRET: process.env.JWT_SECRET,
+};
