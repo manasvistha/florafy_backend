@@ -83,3 +83,91 @@ export const login = async (req, res) => {
 export const getMe = async (req, res) => {
   res.status(200).json({ user: req.user });
 };
+
+// PUT /api/auth/me — the logged-in user updates their OWN name/email.
+// (Distinct from the admin-only PUT /api/users/:id, which edits other people.)
+export const updateMe = async (req, res) => {
+  try {
+    const { name, email } = req.body;
+
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({ message: 'User no longer exists' });
+    }
+
+    if (email !== undefined) {
+      const nextEmail = String(email).toLowerCase().trim();
+      if (!nextEmail) {
+        return res.status(400).json({ message: 'Email cannot be empty' });
+      }
+      if (nextEmail !== user.email) {
+        const emailTaken = await User.findOne({ email: nextEmail });
+        if (emailTaken) {
+          return res.status(409).json({ message: 'That email is already in use' });
+        }
+        user.email = nextEmail;
+      }
+    }
+
+    if (name !== undefined) {
+      if (!String(name).trim()) {
+        return res.status(400).json({ message: 'Name cannot be empty' });
+      }
+      user.name = name;
+    }
+
+    await user.save();
+
+    res.status(200).json({
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        createdAt: user.createdAt,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Something went wrong', error: error.message });
+  }
+};
+
+// PUT /api/auth/change-password — verifies the current password with bcrypt
+// before setting the new one (the model's pre-save hook re-hashes it).
+export const changePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      return res
+        .status(400)
+        .json({ message: 'Please provide your current and new password' });
+    }
+    if (newPassword.length < 6) {
+      return res.status(400).json({ message: 'New password must be at least 6 characters' });
+    }
+    if (currentPassword === newPassword) {
+      return res
+        .status(400)
+        .json({ message: 'Your new password must be different from the current one' });
+    }
+
+    // password has select:false on the model, so ask for it explicitly.
+    const user = await User.findById(req.user._id).select('+password');
+    if (!user) {
+      return res.status(404).json({ message: 'User no longer exists' });
+    }
+
+    const isMatch = await user.comparePassword(currentPassword);
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Your current password is incorrect' });
+    }
+
+    user.password = newPassword;
+    await user.save();
+
+    res.status(200).json({ message: 'Password updated successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Something went wrong', error: error.message });
+  }
+};
