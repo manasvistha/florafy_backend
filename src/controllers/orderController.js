@@ -1,10 +1,14 @@
-import Order, { ORDER_STATUSES } from '../models/Order.js';
+import Order, { ORDER_STATUSES, PAYMENT_METHODS } from '../models/Order.js';
 import Product from '../models/Product.js';
 
 // POST /api/orders  (any logged-in user) — place an order
 export const createOrder = async (req, res) => {
   try {
-    const { items, deliveryAddress } = req.body;
+    const { items, deliveryAddress, paymentMethod } = req.body;
+
+    if (paymentMethod && !PAYMENT_METHODS.includes(paymentMethod)) {
+      return res.status(400).json({ message: 'Invalid payment method' });
+    }
 
     if (!Array.isArray(items) || items.length === 0) {
       return res.status(400).json({ message: 'Your order must contain at least one item' });
@@ -54,6 +58,7 @@ export const createOrder = async (req, res) => {
       items: orderItems,
       totalPrice,
       deliveryAddress,
+      ...(paymentMethod ? { paymentMethod } : {}),
     });
 
     res.status(201).json({ order });

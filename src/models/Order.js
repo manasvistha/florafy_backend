@@ -2,6 +2,9 @@ import mongoose from 'mongoose';
 
 export const ORDER_STATUSES = ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'];
 
+// Display-only for now — no gateway integration, we just record the choice.
+export const PAYMENT_METHODS = ['esewa', 'khalti', 'card', 'cod'];
+
 // Each line item snapshots the product's name and price at purchase time so the
 // order history stays accurate even if the product is later edited or deleted.
 const orderItemSchema = new mongoose.Schema(
@@ -43,6 +46,11 @@ const orderSchema = new mongoose.Schema(
       street: { type: String, required: true, trim: true },
       city: { type: String, required: true, trim: true },
       notes: { type: String, default: '', trim: true },
+    },
+    paymentMethod: {
+      type: String,
+      enum: PAYMENT_METHODS,
+      default: 'cod',
     },
     status: {
       type: String,
