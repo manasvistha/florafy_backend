@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Environment / secrets
+.env
+.env.*
+
+# Admin-uploaded product images (user data, not source) — keep the folder, ignore contents
+uploads/*
+!uploads/.gitkeep
+
+# Logs & OS cruft
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
