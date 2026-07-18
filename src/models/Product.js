@@ -32,6 +32,12 @@ const productSchema = new mongoose.Schema(
       default: 0,
       min: [0, 'Stock cannot be negative'],
     },
+    // Single stems the customer can combine in the Build Bouquet page. Full
+    // bouquets/arrangements stay false so they don't clutter the builder.
+    buildable: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

@@ -4,15 +4,15 @@
 // manages everything. Safe to edit/extend or delete once you have real data.
 
 export const SEED_PRODUCTS = [
-  // ---- Single stems (transparent images used by the bouquet builder) ----
-  { name: 'Rose', price: 80, category: 'Anniversary', stock: 40, image: '/image/products/image1.png', description: 'A timeless red rose, hand-picked at dawn — the classic way to say it all.' },
-  { name: 'Pink Rose', price: 100, category: 'Anniversary', stock: 35, image: '/image/products/image2.png', description: 'A soft blush rose full of gentle romance and grace.' },
-  { name: 'White Rose', price: 100, category: 'Anniversary', stock: 30, image: '/image/products/image3.png', description: 'A pure white rose symbolising elegance and new beginnings.' },
-  { name: 'Chrysanthemum', price: 60, category: 'Decoration', stock: 50, image: '/image/products/image4.png', description: 'A full, cheerful chrysanthemum that adds warmth to any arrangement.' },
-  { name: 'Sunflower', price: 280, category: 'Birthday', stock: 22, image: '/image/products/image5.png', description: 'Bright and sunny, a bloom that keeps smiling all week long.' },
-  { name: 'Carnation', price: 60, category: 'Decoration', stock: 45, image: '/image/products/image6.png', description: 'Ruffled, long-lasting carnations in a delicate two-tone finish.' },
-  { name: 'Gerbera', price: 60, category: 'Birthday', stock: 38, image: '/image/products/image7.png', description: 'Playful gerbera daisies bursting with colour and joy.' },
-  { name: 'Lily', price: 500, category: 'Decoration', stock: 18, image: '/image/products/image8.png', description: 'Elegant, fragrant lilies for a truly special occasion.' },
+  // ---- Single stems (available in the Build Bouquet page) ----
+  { name: 'Rose', price: 80, category: 'Anniversary', stock: 40, buildable: true, image: '/image/products/image1.png', description: 'A timeless red rose, hand-picked at dawn — the classic way to say it all.' },
+  { name: 'Pink Rose', price: 100, category: 'Anniversary', stock: 35, buildable: true, image: '/image/products/image2.png', description: 'A soft blush rose full of gentle romance and grace.' },
+  { name: 'White Rose', price: 100, category: 'Anniversary', stock: 30, buildable: true, image: '/image/products/image3.png', description: 'A pure white rose symbolising elegance and new beginnings.' },
+  { name: 'Chrysanthemum', price: 60, category: 'Decoration', stock: 50, buildable: true, image: '/image/products/image4.png', description: 'A full, cheerful chrysanthemum that adds warmth to any arrangement.' },
+  { name: 'Sunflower', price: 280, category: 'Birthday', stock: 22, buildable: true, image: '/image/products/image5.png', description: 'Bright and sunny, a bloom that keeps smiling all week long.' },
+  { name: 'Carnation', price: 60, category: 'Decoration', stock: 45, buildable: true, image: '/image/products/image6.png', description: 'Ruffled, long-lasting carnations in a delicate two-tone finish.' },
+  { name: 'Gerbera', price: 60, category: 'Birthday', stock: 38, buildable: true, image: '/image/products/image7.png', description: 'Playful gerbera daisies bursting with colour and joy.' },
+  { name: 'Lily', price: 500, category: 'Decoration', stock: 18, buildable: true, image: '/image/products/image8.png', description: 'Elegant, fragrant lilies for a truly special occasion.' },
 
   // ---- Birthday bouquets ----
   { name: 'Birthday Blush', price: 350, category: 'Birthday', stock: 18, image: '/image/products/birthday.jpg', description: 'A soft, pretty bouquet in blush tones to make their birthday extra special.' },

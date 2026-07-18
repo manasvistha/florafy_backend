@@ -36,7 +36,7 @@ export const getProduct = async (req, res) => {
 // POST /api/products  (admin only)
 export const createProduct = async (req, res) => {
   try {
-    const { name, description, price, category, image, stock } = req.body;
+    const { name, description, price, category, image, stock, buildable } = req.body;
 
     if (!name || price === undefined || price === null) {
       return res.status(400).json({ message: 'Name and price are required' });
@@ -49,6 +49,7 @@ export const createProduct = async (req, res) => {
       category,
       image,
       stock,
+      buildable: !!buildable,
     });
 
     res.status(201).json({ product });
@@ -60,7 +61,7 @@ export const createProduct = async (req, res) => {
 // PUT /api/products/:id  (admin only)
 export const updateProduct = async (req, res) => {
   try {
-    const { name, description, price, category, image, stock } = req.body;
+    const { name, description, price, category, image, stock, buildable } = req.body;
 
     const product = await Product.findById(req.params.id);
     if (!product) {
@@ -73,6 +74,7 @@ export const updateProduct = async (req, res) => {
     if (category !== undefined) product.category = category;
     if (image !== undefined) product.image = image;
     if (stock !== undefined) product.stock = stock;
+    if (buildable !== undefined) product.buildable = !!buildable;
 
     await product.save();
 
