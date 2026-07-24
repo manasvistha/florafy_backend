@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import Order, { ORDER_STATUSES, PAYMENT_METHODS } from '../models/Order.js';
 import Product from '../models/Product.js';
 
@@ -28,9 +29,19 @@ export const createOrder = async (req, res) => {
     let totalPrice = 0;
 
     for (const item of items) {
+      // A malformed id (e.g. a stale cart item from before the catalogue moved
+      // to the DB) would otherwise throw a CastError and 500. Treat it the same
+      // as a missing product, with a message the shopper can act on.
+      if (!mongoose.Types.ObjectId.isValid(item.product)) {
+        return res.status(400).json({
+          message: 'Some items in your cart are no longer available. Please remove them and add fresh ones.',
+        });
+      }
       const product = await Product.findById(item.product);
       if (!product) {
-        return res.status(404).json({ message: `Flower not found: ${item.product}` });
+        return res.status(400).json({
+          message: 'Some items in your cart are no longer available. Please remove them and add fresh ones.',
+        });
       }
 
       const quantity = Number(item.quantity) || 0;
